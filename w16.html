@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>وبائيات - أساسيات علم الوبائيات (30 سؤالاً)</title>
+<style>
+  :root{
+    --navy:#1B3A4B;
+    --navy-light:#2c5470;
+    --ivory:#FAF7F0;
+    --sage:#8AA893;
+    --charcoal:#3a3632;
+    --danger:#b23a3a;
+    --success:#3a7a4d;
+    --amber:#c78a2e;
+    --border:#dfd8c8;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Tahoma','Segoe UI',sans-serif;
+    background:var(--ivory);
+    color:var(--charcoal);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:var(--navy);
+    color:var(--ivory);
+    padding:18px 16px 14px;
+    text-align:center;
+    position:sticky;
+    top:0;
+    z-index:10;
+    box-shadow:0 2px 6px rgba(0,0,0,0.15);
+  }
+  header h1{
+    margin:0 0 6px;
+    font-size:17px;
+    font-weight:700;
+  }
+  .progress-wrap{
+    max-width:560px;
+    margin:0 auto;
+  }
+  .progress-bar-bg{
+    background:rgba(255,255,255,0.2);
+    border-radius:20px;
+    height:8px;
+    overflow:hidden;
+  }
+  .progress-bar-fill{
+    background:var(--sage);
+    height:100%;
+    width:0%;
+    transition:width .3s ease;
+  }
+  .progress-text{
+    font-size:12px;
+    margin-top:6px;
+    opacity:.9;
+  }
+  main{
+    max-width:560px;
+    margin:0 auto;
+    padding:16px;
+  }
+  .card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px 16px;
+    margin-bottom:14px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.05);
+  }
+  .q-meta{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:12px;
+    color:#7a7368;
+    margin-bottom:8px;
+  }
+  .q-tag{
+    background:var(--ivory);
+    border:1px solid var(--border);
+    padding:2px 10px;
+    border-radius:20px;
+    font-weight:700;
+    color:var(--navy);
+  }
+  .retry-badge{
+    background:#fdeeea;
+    color:var(--danger);
+    border:1px solid #f2c9c0;
+    padding:2px 10px;
+    border-radius:20px;
+    font-weight:700;
+    font-size:11px;
+  }
+  .q-text{
+    font-size:16px;
+    font-weight:700;
+    color:var(--navy);
+    margin-bottom:14px;
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .option-btn{
+    display:block;
+    width:100%;
+    text-align:right;
+    background:var(--ivory);
+    border:1.5px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14.5px;
+    font-family:inherit;
+    color:var(--charcoal);
+    cursor:pointer;
+    transition:background .15s, border-color .15s, transform .1s;
+  }
+  .option-btn:active{transform:scale(0.98);}
+  .option-btn:hover{border-color:var(--navy-light);}
+  .option-btn.correct{
+    background:#eaf5ec;
+    border-color:var(--success);
+    color:var(--success);
+    font-weight:700;
+  }
+  .option-btn.wrong{
+    background:#fdeeea;
+    border-color:var(--danger);
+    color:var(--danger);
+    font-weight:700;
+  }
+  .option-btn.disabled{
+    pointer-events:none;
+    opacity:.6;
+  }
+  .option-btn.disabled.correct,
+  .option-btn.disabled.wrong{
+    opacity:1;
+  }
+  .feedback{
+    margin-top:16px;
+    border-radius:10px;
+    padding:14px;
+    font-size:14px;
+    display:none;
+    animation:fadein .25s ease;
+  }
+  @keyframes fadein{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+  .feedback.show{display:block;}
+  .feedback.right{
+    background:#eaf5ec;
+    border:1px solid var(--success);
+  }
+  .feedback.wrong{
+    background:#fdeeea;
+    border:1px solid var(--danger);
+  }
+  .feedback-title{
+    font-weight:700;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .feedback.right .feedback-title{color:var(--success);}
+  .feedback.wrong .feedback-title{color:var(--danger);}
+  .feedback-body{color:var(--charcoal);}
+  .feedback-body b{color:var(--navy);}
+  .next-btn{
+    margin-top:14px;
+    width:100%;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:13px;
+    font-size:15px;
+    font-weight:700;
+    font-family:inherit;
+    cursor:pointer;
+  }
+  .next-btn:active{opacity:.85;}
+  .tf-wrap{display:flex; gap:10px;}
+  .tf-wrap .option-btn{flex:1; text-align:center;}
+
+  /* Start screen */
+  .start-screen{
+    max-width:560px;
+    margin:24px auto;
+    padding:0 16px;
+    text-align:center;
+  }
+  .start-screen .logo-dot{
+    width:54px; height:54px;
+    background:var(--navy);
+    border-radius:50%;
+    margin:0 auto 16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ivory);
+    font-weight:700;
+    font-size:20px;
+  }
+  .start-screen h2{
+    color:var(--navy);
+    margin-bottom:8px;
+  }
+  .start-screen p{
+    color:#655f55;
+    font-size:14px;
+    margin-bottom:22px;
+  }
+  .stat-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .stat-box{
+    flex:1;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 8px;
+  }
+  .stat-box .num{
+    font-size:20px;
+    font-weight:700;
+    color:var(--navy);
+  }
+  .stat-box .label{
+    font-size:11px;
+    color:#7a7368;
+  }
+  .start-btn{
+    width:100%;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:15px;
+    font-size:16px;
+    font-weight:700;
+    font-family:inherit;
+    cursor:pointer;
+  }
+  .start-btn:hover{opacity:0.9;}
+
+  /* Review screen */
+  .review-header{
+    text-align:center;
+    padding:20px 16px 4px;
+  }
+  .review-header .badge{
+    display:inline-block;
+    background:var(--sage);
+    color:#fff;
+    padding:6px 18px;
+    border-radius:20px;
+    font-weight:700;
+    font-size:13px;
+    margin-bottom:10px;
+  }
+  .review-header h2{
+    color:var(--navy);
+    margin:0 0 4px;
+  }
+  .review-header p{
+    color:#655f55;
+    font-size:13px;
+    margin:0 0 10px;
+  }
+  .review-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-right:5px solid var(--sage);
+    border-radius:10px;
+    padding:14px 16px;
+    margin-bottom:12px;
+  }
+  .review-card .rq-num{
+    font-size:11px;
+    color:var(--navy);
+    font-weight:700;
+    margin-bottom:4px;
+  }
+  .review-card .rq-text{
+    font-weight:700;
+    font-size:14.5px;
+    color:var(--charcoal);
+    margin-bottom:8px;
+  }
+  .review-card .rq-answer{
+    background:var(--ivory);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:13.5px;
+    margin-bottom:8px;
+    color:var(--success);
+    font-weight:700;
+  }
+  .review-card .rq-reason{
+    font-size:13px;
+    color:#4a453d;
+  }
+  .review-card .rq-attempts{
+    margin-top:8px;
+    font-size:11px;
+    color:var(--danger);
+  }
+  .hidden{display:none !important;}
+  footer.finish-note{
+    text-align:center;
+    color:#8a8375;
+    font-size:12px;
+    padding:20px;
+  }
+</style>
+</head>
+<body>
+
+<header id="mainHeader">
+  <h1>وبائيات - أساسيات علم الوبائيات (30 سؤالاً)</h1>
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+  </div>
+</header>
+
+<!-- START SCREEN -->
+<div class="start-screen" id="startScreen">
+  <div class="logo-dot">EP</div>
+  <h2>جاهز للاختبار؟</h2>
+  <p>30 سؤالاً (اختيار من متعدد + صح/خطأ) حول أساسيات علم الوبائيات، المؤشرات الصحية، ومفاهيم الصحة العامة. يظهر التعليل بعد كل إجابة، وإذا أخطأت يُعاد عليك السؤال حتى تجيب بشكل صحيح.</p>
+  <div class="stat-row">
+    <div class="stat-box"><div class="num">30</div><div class="label">سؤالاً</div></div>
+    <div class="stat-box"><div class="num">2</div><div class="label">قسمان</div></div>
+    <div class="stat-box"><div class="num">∞</div><div class="label">محاولات</div></div>
+  </div>
+  <button class="start-btn" id="startBtn">ابدأ الاختبار</button>
+</div>
+
+<!-- QUIZ MAIN -->
+<main id="quizMain" class="hidden">
+  <div class="card" id="qCard">
+    <div class="q-meta">
+      <span class="q-tag" id="qTag">سؤال 1</span>
+      <span class="retry-badge hidden" id="retryBadge">إعادة المحاولة</span>
+    </div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="qOptions"></div>
+    <div class="feedback" id="feedback">
+      <div class="feedback-title" id="feedbackTitle"></div>
+      <div class="feedback-body" id="feedbackBody"></div>
+    </div>
+    <button class="next-btn hidden" id="nextBtn">السؤال التالي</button>
+  </div>
+</main>
+
+<!-- REVIEW SCREEN -->
+<div id="reviewScreen" class="hidden">
+  <div class="review-header">
+    <div class="badge">أحسنت! أكملت الاختبار</div>
+    <h2>مراجعة شاملة للأسئلة والحلول</h2>
+    <p>كل الأسئلة مع الإجابة الصحيحة والتعليل العلمي الكامل للمراجعة النهائية.</p>
+  </div>
+  <main style="padding-top:0;" id="reviewList"></main>
+  <footer class="finish-note">انتهت المراجعة — بالتوفيق! 🩺</footer>
+</div>
+
+<script>
+// تعريف بنك الأسئلة (كما هو مطلوب)
+var QUESTIONS = [
+  // 15 سؤال اختيار من متعدد (1-15)
+  {tag:"اختيار من متعدد", text:"من هو الطبيب الذي يُعتبر مؤسس علم الوبائيات؟",
+   options:["جون لاست","أبقراط","جون سنو","إدوارد جينر"],
+   correct:2,
+   reason:"جون سنو هو طبيب إنكليزي الجنسية، وهو مؤسس علم الوبائيات بفضل دوره التاريخي في إيقاف تفشي وباء الكوليرا في مدينة لندن عام 1854م من خلال تفكيره الصحي العمومي."},
+
+  {tag:"اختيار من متعدد", text:"كيف تعرف منظمة الصحة العالمية (WHO) مصطلح 'الصحة'؟",
+   options:["غياب المرض أو العجز المادي","حالة من المعافاة التامة بدنياً ونفسياً واجتماعياً، وليست مجرد غياب المرض","القدرة على أداء الوظائف اليومية دون ألم","التخلص التام من الأمراض الوراثية والمعدية"],
+   correct:1,
+   reason:"الصحة هي حالة من المعافاة التامة بدنياً ونفسياً واجتماعياً، وهي ليست مجرد غياب المرض أو الألم، وهو التعريف المثالي الذي أطلقته منظمة الصحة العالمية عام 1948."},
+
+  {tag:"اختيار من متعدد", text:"ما هي الخطوة الأولى ضمن مراحل المبادرة الصحية العمومية؟",
+   options:["تحديد عوامل الخطر","تطبيق التدخل الملائم","تأكيد وجود المشكلة الصحية","تطوير التدخل الملائم"],
+   correct:2,
+   reason:"الخطوة الأولى هي تأكيد وجود المشكلة الصحية (Health Problem Ascertainment)، حيث يجب توفر أدلة واضحة على المشكلة وخطورتها قبل الانتقال للخطوات الأخرى كتحديد عوامل الخطر."},
+
+  {tag:"اختيار من متعدد", text:"ماذا يمثل حرف 'N' في نموذج محددات الصحة (BEINGS Model)؟",
+   options:["عصبية (Neurological)","غذائية (Nutritional)","طبيعية (Natural)","وطنية (National)"],
+   correct:1,
+   reason:"يمثل الحرف N العوامل الغذائية (Nutritional)، والتي تعتبر سبباً رئيسياً لكثير من الأمراض كأمراض القلب والسكري والسرطان."},
+
+  {tag:"اختيار من متعدد", text:"ما هو الفارق الأساسي بين معدل 'الوقوع' (Incidence) ومعدل 'الانتشار' (Prevalence)؟",
+   options:["الوقوع يقيس الحالات الجديدة، بينما الانتشار يقيس الحالات الموجودة.","الوقوع يقيس الحالات الموجودة، بينما الانتشار يقيس الحالات الجديدة.","الوقوع يُستخدم للأمراض المزمنة فقط، والانتشار للأمراض الحادة.","لا يوجد فرق، كلاهما يقيسان الوفيات حصراً."],
+   correct:0,
+   reason:"معدل الوقوع يقيس الحالات الجديدة التي تظهر في فترة معينة، بينما يعبر معدل الانتشار عن تواتر الحالات الموجودة مسبقاً في جمهرة محددة في لحظة زمنية معينة."},
+
+  {tag:"اختيار من متعدد", text:"كيف يتم حساب معدل وفيات الرضع (IMR) بدقة؟",
+   options:["عدد وفيات الأطفال تحت سن 5 سنوات مقسوماً على عدد الولادات الحية","عدد وفيات الأطفال تحت عمر السنة مقسوماً على عدد الولادات الحية في نفس السنة ومضروباً بـ 1000","عدد وفيات الولدان (أقل من 28 يوماً) مقسوماً على عدد الولادات الحية ومضروباً بـ 100","عدد وفيات الأطفال دون سن السنة مقسوماً على إجمالي عدد السكان"],
+   correct:1,
+   reason:"يحسب معدل وفيات الرضع بقسمة عدد وفيات الأطفال الذين هم تحت عمر السنة خلال سنة معينة، على عدد الولادات الحية في نفس السنة، ويضرب الناتج بـ 1000."},
+
+  {tag:"اختيار من متعدد", text:"أي من المفاهيم التالية يهتم بسياق البحث والشروط المثالية لنجاح التدخل الصحي؟",
+   options:["الكفاءة (Efficiency)","الفعالية (Effectiveness)","العدالة (Equity)","التعزيز (Promotion)"],
+   correct:1,
+   reason:"الفعالية (Effectiveness) هي مقياس لمدى نجاح التدخل في إطار البحث وضمن شروطه المثالية، حيث لا يجب أن توجد أي أخطاء."},
+
+  {tag:"اختيار من متعدد", text:"ماذا يعني مصطلح التوزع (Distribution) في دراسات علم الوبائيات بحسب ثلاثية TPP؟",
+   options:["العلاج، المرضى، الأطباء","الزمان (Time)، المكان (Place)، الأشخاص (Person)","الانتقال، الوقاية، الحماية","الحرارة، الضغط، النبض"],
+   correct:1,
+   reason:"يتم تحليل الأحداث الصحية في علم الوبائيات بحسب ثلاثية TPP والتي تشمل: زمان حدوث المشكلة (Time)، مكان حدوثها (Place)، والأشخاص المتأثرين بها (Person)."},
+
+  {tag:"اختيار من متعدد", text:"ما هو المرض الذي أعلنت منظمة الصحة العالمية عن تحقيق إنجاز استئصاله تماماً في عام 1980؟",
+   options:["شلل الأطفال (Polio)","الكوليرا (Cholera)","الجدري (Smallpox)","السل (Tuberculosis)"],
+   correct:2,
+   reason:"أعلنت جمعية الصحة العمومية في عام 1980 أن العالم حقق إنجازاً صحياً هاماً جداً باستئصال مرض الجدري (Smallpox)."},
+
+  {tag:"اختيار من متعدد", text:"وفقاً لتعريفات مقاييس العلة، ماذا يُقصد بـ 'الإعاقة' (Handicap)؟",
+   options:["أي ضياع أو خلل في البنية التشريحية أو الفيزيولوجية","عيب في شخص معين يحد أو يمنع تحقيق الدور الطبيعي الاجتماعي لهذا الفرد","نقص في القدرة على أداء نشاط ضمن النطاق الطبيعي للإنسان","فقدان القدرة على الرؤية أو السمع فقط"],
+   correct:1,
+   reason:"الإعاقة (Handicap) هي التأثير الناجم عن علة أو عجز والذي يحد أو يمنع تحقيق الدور الطبيعي للفرد ضمن مجتمعه، وتمثل الوظيفة الاجتماعية المطلقة اعتماداً على العمر والجنس والعوامل الثقافية."},
+
+  {tag:"اختيار من متعدد", text:"ما هو المعيار الوبائي الأكثر استخداماً ودلالة لتقييم حجم المشكلة وتواتر مرض مزمن كالسكري؟",
+   options:["معدل إماتة الحالة","معدل الوقوع (Incidence)","معدل الانتشار (Prevalence)","معدل وفيات الأمهات"],
+   correct:2,
+   reason:"يتم استخدام الانتشار (Prevalence) لتقييم الأمراض المزمنة مثل السكري لأنه يقيس تواتر الحالات الموجودة وتراكمها في المجتمع."},
+
+  {tag:"اختيار من متعدد", text:"مَن هي الجمهرة التي تُستثنى ولا تُعتبر 'تحت خطر الإصابة' (Population at risk) بمرض الزكام في لحظة معينة؟",
+   options:["جميع الأشخاص الأصحاء في المجتمع","الأشخاص المصابون بالزكام في نفس اللحظة","الأطفال في المدارس","كبار السن وذوو المناعة الضعيفة"],
+   correct:1,
+   reason:"الجمهرة تحت الخطر هي التي تكون معرضة للإصابة، ولا تشمل الأفراد المصابين بالمرض حالياً، فالمصاب بالزكام لا يمكن اعتباره تحت خطر الإصابة به لأنه مصاب بالفعل."},
+
+  {tag:"اختيار من متعدد", text:"عند حساب 'نسبة وفيات الأمهات' (MMR)، أي من الحالات التالية لا تدخل في الإحصاء؟",
+   options:["وفاة الأم بسبب نزف حاد بعد الولادة","وفاة الأم بسبب إنتان متعلق بالنفاس","وفاة امرأة حامل إثر حادث سير قبل ولادتها بيوم","وفاة الأم بسبب الارتعاج (تسمم الحمل)"],
+   correct:2,
+   reason:"نسبة وفيات الأمهات تشمل فقط الوفيات الناتجة عن أسباب متعلقة بالحمل والولادة والنفاس، وتُستثنى منها الوفيات الناتجة عن أسباب خارجية عارضة كحوادث السيارات."},
+
+  {tag:"اختيار من متعدد", text:"ما هو المقام (Denominator) الرياضي المستخدم لحساب 'نسبة وفيات الأمهات' (MMR)؟",
+   options:["جميع النساء في سن الإنجاب","إجمالي عدد سكان المنطقة المستهدفة","عدد الولادات الحية في نفس المنطقة وخلال نفس السنة","إجمالي عدد حالات الحمل المسجلة"],
+   correct:2,
+   reason:"يتم حساب نسبة وفيات الأمهات بقسمة عدد الوفيات المتعلقة بالنفاس والولادة على عدد الولادات الحية في نفس المنطقة خلال نفس السنة."},
+
+  {tag:"اختيار من متعدد", text:"ماذا يُقصد بمصطلح الاستعادة (Restoration) كأحد أهداف الصحة العامة؟",
+   options:["حماية الأفراد الأصحاء من الوقوع في المرض","تعزيز صحة الأفراد وتمكينهم من تحسينها","استعادة الصحة أو المعافاة بعد حدوث المرض","الوقاية الشاملة من الأمراض الوراثية"],
+   correct:2,
+   reason:"الاستعادة (Restoration) تعني استعادة الصحة والمعافاة، وهو ما يقوم به الطبيب عندما يشتكي المريض من مشكلة فيحاول إرجاعه لحالة ما قبل المرض."},
+
+  // 15 سؤال صح/خطأ (16-30)
+  {tag:"صح/خطأ", type:"tf", text:"علم الوبائيات (Epidemiology) يقتصر بشكل حصري على دراسة الأوبئة والأمراض المعدية.",
+   options:["صح","خطأ"], correct:1,
+   reason:"علم الوبائيات لا يدرس الأوبئة فقط، بل يهتم بجميع المشاكل والحوادث المتعلقة بالصحة في المجتمع مثل التدخين، حوادث السير، وتناول المخدرات."},
+
+  {tag:"صح/خطأ", type:"tf", text:"استطاع جون سنو السيطرة على وباء الكوليرا في لندن عام 1854 بعد اكتشافه للبكتيريا المسببة للمرض باستخدام المجهر.",
+   options:["صح","خطأ"], correct:1,
+   reason:"تمكن جون سنو من السيطرة على وباء الكوليرا بتطبيق مبادئ علم الصحة العامة بقطع المياه الملوثة، وذلك قبل معرفة علم الجراثيم أو توفر المجاهر."},
+
+  {tag:"صح/خطأ", type:"tf", text:"الكفاءة (Efficiency) هي المقياس الذي يعبر عن العلاقة بين النتائج المحققة والموارد المستهلكة على أرض الواقع.",
+   options:["صح","خطأ"], correct:0,
+   reason:"الكفاءة تتعلق بالموارد الموجودة والواقع الحالي الفعلي، وتقيس مدى تناسب النتائج المحققة مع ما تم استهلاكه وإنفاقه من موارد."},
+
+  {tag:"صح/خطأ", type:"tf", text:"في علم الوبائيات، زيادة حالات الوفاة أو تسريع معدل المعافاة يؤديان إلى تقليل معدل الانتشار (Prevalence) لمرض ما.",
+   options:["صح","خطأ"], correct:0,
+   reason:"بحسب نموذج قدر الانتشار (Prevalence Pot)، فإن خروج الحالات من القدر سواء بالوفاة (Death) أو بالمعافاة (Recovery) ينقص من حجم الحالات الموجودة وبالتالي يقلل معدل الانتشار."},
+
+  {tag:"صح/خطأ", type:"tf", text:"يُعتبر 'معدل الوفيات الخام' (Crude Death Rate) مقياساً تفصيلياً دقيقاً لأنه يحدد سبب الوفاة وجنس المتوفين والفئة العمرية.",
+   options:["صح","خطأ"], correct:1,
+   reason:"سُمي بمعدل الوفيات 'الخام' لأنه عام جداً (Crude)، حيث أنه لا يحدد الوفيات حسب الجنس أو العمر ولا يحدد السبب، بل يضم كل الوفيات مقسومة على جميع المعرضين للوفاة."},
+
+  {tag:"صح/خطأ", type:"tf", text:"من المبادئ الأساسية في الصحة العامة أن صحة المجتمع ككل تفوق في أهميتها صحة الفرد الواحد.",
+   options:["صح","خطأ"], correct:0,
+   reason:"صحة المجتمع أهم من صحة الفرد الواحد، لذلك يُلزم الطبيب بالإبلاغ عن الأمراض السارية كالسل والإيدز لئلا تنتقل للمجتمع، حتى وإن تعارض ذلك مع خصوصية الفرد."},
+
+  {tag:"صح/خطأ", type:"tf", text:"يُحسب 'الوقوع التراكمي' بقسمة عدد الأشخاص الذين أصيبوا بالمرض حديثاً على عدد الأشخاص الذين كانوا غير مصابين في بداية الفترة.",
+   options:["صح","خطأ"], correct:0,
+   reason:"الوقوع التراكمي (Cumulative incidence) هو أحد مقاييس الوقوع الأساسية، ويحسب نسبة الأفراد الذين أصيبوا بالمرض منسوبين لمن كانوا غير مصابين في بداية الفترة المدروسة."},
+
+  {tag:"صح/خطأ", type:"tf", text:"وفقاً لمراحل المبادرة الصحية العمومية، فإن خطوة تطوير التدخل الملائم تسبق دائماً خطوة تحديد عوامل الخطر.",
+   options:["صح","خطأ"], correct:1,
+   reason:"الترتيب الصحيح يبدأ بتأكيد وجود المشكلة، يليه تحديد عوامل الخطر (Risk Factors Identification)، وبعد ذلك يأتي تطوير التدخل الملائم."},
+
+  {tag:"صح/خطأ", type:"tf", text:"التغيرات المناخية والكوارث بنوعيها (الطبيعية وتلك التي من صنع البشر) تعتبر من التحديات الأساسية للصحة العامة.",
+   options:["صح","خطأ"], correct:0,
+   reason:"تحديات الصحة العامة تشمل عدة قضايا أبرزها الكوارث (الطبيعية أو من صنع البشر)، التغيرات المناخية، التغيرات السكانية، والفوارق الصحية."},
+
+  {tag:"صح/خطأ", type:"tf", text:"عند رغبة الباحثين في دراسة أسباب تطور مرض السرطان، يُفضل استخدام معدل الانتشار (Prevalence) بدلاً من معدل الوقوع (Incidence).",
+   options:["صح","خطأ"], correct:1,
+   reason:"لدراسة أسباب مرض كالسرطان يُفضل استخدام معدل الوقوع (Incidence) لمعرفة الحالات الجديدة، بينما يُستخدم الانتشار (Prevalence) لدراسة فعالية الأدوية وطرق العلاج."},
+
+  {tag:"صح/خطأ", type:"tf", text:"التوزع الديموغرافي للأشخاص مستمد من الكلمة اللاتينية 'Demos' والتي تعني باللغة الإنجليزية السكان (People).",
+   options:["صح","خطأ"], correct:0,
+   reason:"مصطلح الوبائيات (Epidemiology) مكون من مقاطع أبرزها Demos والتي تعني السكان أو الجمهرة، ومنها أيضاً اشتق مصطلح علم السكان (Demography)."},
+
+  {tag:"صح/خطأ", type:"tf", text:"تطور وسائل التشخيص الطبي لا يؤثر على معدلات انتشار الأمراض في المجتمع بل يبقيها ثابتة.",
+   options:["صح","خطأ"], correct:1,
+   reason:"تطور وسائل التشخيص يُعد من العوامل التي تزيد من انتشار المرض الظاهري، لأنه يؤدي إلى إدخال أشخاص عرضة للمرض واكتشاف حالات مرضية لم تكن مشخصة مسبقاً."},
+
+  {tag:"صح/خطأ", type:"tf", text:"ضمن أهداف تطوير الألفية (MDGs)، التزمت الدول بتخفيض معدل وفيات الرضع (الهدف الرابع) ونسبة وفيات الأمهات (الهدف الخامس).",
+   options:["صح","خطأ"], correct:0,
+   reason:"التزمت الدول بثمانية أهداف تنموية (MDGs) بحلول عام 2015، منها الهدف الرابع للحد من وفيات الأطفال (IMR) والهدف الخامس للحد من وفيات الأمهات نتيجة الحمل (MMR)."},
+
+  {tag:"صح/خطأ", type:"tf", text:"المعدل (Rate) والنسبة (Ratio) هما مصطلحان مترادفان في علم الوبائيات، حيث يكون البسط مشتقاً من المقام في كليهما بشكل دائم.",
+   options:["صح","خطأ"], correct:1,
+   reason:"في المعدل (Rate) يكون البسط مشتقاً من المقام، بينما في النسبة (Ratio) لا تكون الحالات بالضرورة مشتقة من المقام (مثل نسبة وفيات الأمهات حيث المقام هو الولادات)."},
+
+  {tag:"صح/خطأ", type:"tf", text:"يعتبر النزف بعد الولادة السبب الأول والرئيسي لوفيات الأمهات وفقاً للإحصائيات الطبية التنموية.",
+   options:["صح","خطأ"], correct:0,
+   reason:"بناءً على الإحصائيات والأسباب الموضحة لوفيات الأمهات، يُشكل النزف بعد الولادة (Haemorrhage) السبب الأهم، تليه أسباب أخرى كالارتعاج والانتانات ومشاكل التخدير."}
+];
+
+// --- بداية الكود التنفيذي ---
+window.onload = function() {
+  console.log("تم تحميل الصفحة بالكامل");
+
+  var startBtn = document.getElementById('startBtn');
+  var startScreen = document.getElementById('startScreen');
+  var quizMain = document.getElementById('quizMain');
+  var reviewScreen = document.getElementById('reviewScreen');
+  var progressFill = document.getElementById('progressFill');
+  var progressText = document.getElementById('progressText');
+  var qTag = document.getElementById('qTag');
+  var qText = document.getElementById('qText');
+  var qOptions = document.getElementById('qOptions');
+  var feedback = document.getElementById('feedback');
+  var feedbackTitle = document.getElementById('feedbackTitle');
+  var feedbackBody = document.getElementById('feedbackBody');
+  var nextBtn = document.getElementById('nextBtn');
+  var retryBadge = document.getElementById('retryBadge');
+
+  // التحقق من وجود العناصر
+  if (!startBtn) console.error("زر البدء غير موجود!");
+  if (!startScreen) console.error("شاشة البداية غير موجودة!");
+
+  // متغيرات الحالة
+  var queue = [];
+  var currentIdx = 0;
+  var solvedCount = 0;
+  var totalUnique = QUESTIONS.length;
+  var results = [];
+
+  // دوال الاختبار
+  function updateProgress() {
+    var pct = Math.round((solvedCount / totalUnique) * 100);
+    progressFill.style.width = pct + '%';
+    progressText.textContent = solvedCount + ' / ' + totalUnique;
+  }
+
+  function renderQuestion() {
+    if (queue.length === 0) {
+      showReview();
+      return;
+    }
+    var q = queue[currentIdx];
+    if (!q) {
+      showReview();
+      return;
+    }
+    updateProgress();
+    qTag.textContent = q.tag + ' · سؤال ' + (q.origIndex + 1);
+    qText.textContent = q.text;
+    qOptions.innerHTML = '';
+    feedback.classList.remove('show', 'right', 'wrong');
+    nextBtn.classList.add('hidden');
+
+    if (q.attempts > 0) {
+      retryBadge.classList.remove('hidden');
+    } else {
+      retryBadge.classList.add('hidden');
+    }
+
+    var isTF = q.type === 'tf';
+    var wrap = document.createElement('div');
+    wrap.className = isTF ? 'tf-wrap' : '';
+
+    q.options.forEach(function(opt, i) {
+      var btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.textContent = opt;
+      btn.addEventListener('click', function() {
+        handleAnswer(i, btn);
+      });
+      wrap.appendChild(btn);
+    });
+    qOptions.appendChild(wrap);
+  }
+
+  function handleAnswer(selectedIdx, btnEl) {
+    var q = queue[currentIdx];
+    var allBtns = qOptions.querySelectorAll('.option-btn');
+    allBtns.forEach(function(b) { b.classList.add('disabled'); });
+
+    var isCorrect = (selectedIdx === q.correct);
+
+    if (isCorrect) {
+      btnEl.classList.add('correct');
+    } else {
+      btnEl.classList.add('wrong');
+      allBtns[q.correct].classList.add('correct');
+    }
+
+    feedback.classList.add('show', isCorrect ? 'right' : 'wrong');
+    feedbackTitle.textContent = isCorrect ? '✔ إجابة صحيحة' : '✘ إجابة خاطئة';
+    feedbackBody.innerHTML = '<b>الإجابة الصحيحة:</b> ' + q.options[q.correct] + '<br><br><b>التعليل والاستنتاج:</b> ' + q.reason;
+
+    q.lastCorrect = isCorrect;
+    if (!isCorrect) {
+      q.attempts += 1;
+    }
+
+    nextBtn.classList.remove('hidden');
+    nextBtn.textContent = isCorrect ? 'السؤال التالي' : 'إعادة المحاولة على هذا السؤال';
+  }
+
+  function nextQuestion() {
+    var q = queue[currentIdx];
+    if (q.lastCorrect) {
+      results[q.origIndex] = {
+        tag: q.tag,
+        text: q.text,
+        correctAnswer: q.options[q.correct],
+        reason: q.reason,
+        attempts: q.attempts
+      };
+      solvedCount++;
+      queue.splice(currentIdx, 1);
+      if (currentIdx >= queue.length) currentIdx = 0;
+    } else {
+      var failedQ = queue.splice(currentIdx, 1)[0];
+      queue.push(failedQ);
+      if (currentIdx >= queue.length) currentIdx = 0;
+    }
+
+    if (queue.length === 0) {
+      showReview();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  function showReview() {
+    quizMain.classList.add('hidden');
+    document.getElementById('mainHeader').classList.add('hidden');
+    reviewScreen.classList.remove('hidden');
+
+    var list = document.getElementById('reviewList');
+    list.innerHTML = '';
+    results.forEach(function(r, idx) {
+      var card = document.createElement('div');
+      card.className = 'review-card';
+      var attemptsNote = '';
+      if (r.attempts > 0) {
+        attemptsNote = '<div class="rq-attempts">تمت إعادة هذا السؤال ' + r.attempts + ' مرة قبل الإجابة الصحيحة</div>';
+      }
+      card.innerHTML =
+        '<div class="rq-num">' + r.tag + ' · سؤال ' + (idx + 1) + '</div>' +
+        '<div class="rq-text">' + r.text + '</div>' +
+        '<div class="rq-answer">✔ ' + r.correctAnswer + '</div>' +
+        '<div class="rq-reason"><b>التعليل:</b> ' + r.reason + '</div>' +
+        attemptsNote;
+      list.appendChild(card);
+    });
+  }
+
+  // ربط زر البدء
+  startBtn.addEventListener('click', function() {
+    console.log("تم النقر على زر البدء");
+    // إعادة تهيئة المتغيرات
+    queue = QUESTIONS.map(function(q, i) {
+      return { ...q, origIndex: i, attempts: 0 };
+    });
+    currentIdx = 0;
+    solvedCount = 0;
+    results = [];
+
+    startScreen.classList.add('hidden');
+    quizMain.classList.remove('hidden');
+    renderQuestion();
+  });
+
+  // ربط زر التالي
+  nextBtn.addEventListener('click', nextQuestion);
+
+  console.log("تم تهيئة الاختبار بنجاح");
+}; // نهاية window.onload
+</script>
+</body>
+</html>
